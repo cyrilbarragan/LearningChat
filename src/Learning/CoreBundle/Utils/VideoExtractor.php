@@ -55,7 +55,21 @@ class VideoExtractor
 
     public function processVideo($videoFilename, $timeStart)
     {
-        $start = \FFMpeg\Coordinate\TimeCode::fromSeconds($timeStart);
+        //var_dump($timeStart); die;
+
+        $destFilename = self::VIDEO_CLIPPED_PATH . "/" . str_replace(':', '', $timeStart) . '_' .  basename($videoFilename);
+        $cmd = "ffmpeg -ss $timeStart -i $videoFilename -t 00:05:00 -c copy $destFilename";
+        var_dump("ffmpeg -ss $timeStart -i $videoFilename -t 00:05:00 -c copy $destFilename");
+        shell_exec($cmd);
+
+        /*
+        $format = new \FFMpeg\Format\Video\X264();
+        $format->on('progress', function ($video, $format, $percentage) {
+            echo "$percentage % transcoded";
+        });
+
+
+        $start = \FFMpeg\Coordinate\TimeCode::fromSeconds(600);
         $duration = \FFMpeg\Coordinate\TimeCode::fromSeconds(self::CLIP_DURATION);
 
         try {
@@ -63,13 +77,14 @@ class VideoExtractor
         } catch (\RuntimeException $e) {
             $this->logError("Impossible d'ouvrir $videoFilename \nException : ". $e->getMessage());
         }
-
+        $filename = $this->clipsPath($videoFilename);
         try {
             $video->filters()->clip($start, $duration);
-            $video->save($format, $this->clipsPath($videoFilename));
+            $video->save($format, $filename);
         } catch (\RuntimeException $e) {
-            $this->logError("Impossible de couper /sauvegarder $videoFilename \nException : ". $e->getMessage());
+            $this->logError("Impossible de couper /sauvegarder $filename \nException : ". $e->getMessage());
         }
+        */
     }
 
     public function getPossiblesVideosForItem($item, $date)

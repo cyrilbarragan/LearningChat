@@ -17,16 +17,16 @@ class CatTree
             'Box5' => array(
                 array('badge' => '224ADB', 'time' => '11:47:58', 'bal' => '9', 'cam' => 'ch02'),
                 array('badge' => '233F78', 'time' => '11:51:37', 'bal' => '9', 'cam' => 'ch02'),
-                array('badge' => '1FA5B3', 'time' => '13:31:03', 'bal' => '9', 'cam' => 'ch02'),
+     /*           array('badge' => '1FA5B3', 'time' => '13:31:03', 'bal' => '9', 'cam' => 'ch02'),
                 array('badge' => '2D58D6', 'time' => '12:24:09', 'bal' => '10', 'cam' => 'ch04'),
                 array('badge' => '2D58AA', 'time' => '11:57:43', 'bal' => '10', 'cam' => 'ch04'),
                 array('badge' => '233F61', 'time' => '11:47:27', 'bal' => '10', 'cam' => 'ch04'),
                 array('badge' => '2D66C5', 'time' => '14:48:10', 'bal' => '10', 'cam' => 'ch04'),
                 array('badge' => '2D6E16', 'time' => '11:53:28', 'bal' => '10', 'cam' => 'ch04'),
                 array('badge' => '232080F', 'time' => '11:49:32', 'bal' => '10', 'cam' => 'ch04'),
-                array('badge' => '232080', 'time' => '12:10:10', 'bal' => '10', 'cam' => 'ch04'),
+                array('badge' => '232080', 'time' => '12:10:10', 'bal' => '10', 'cam' => 'ch04'),*/
             ),
-            'Box6' => array(
+            /*'Box6' => array(
                 array('badge' => '233F6E', 'time' => '11:59:01', 'bal' => '11', 'cam' => 'ch0'),
                 array('badge' => '234B34', 'time' => '12:03:04', 'bal' => '11', 'cam' => 'ch0'),
                 array('badge' => '17DA9F', 'time' => '12:15:22', 'bal' => '11', 'cam' => 'ch0'),
@@ -58,9 +58,9 @@ class CatTree
                 array('badge' => '234B09', 'time' => '17:43:07', 'bal' => '15', 'cam' => 'ch03'),
                 array('badge' => '5A00CA', 'time' => '11:49:50', 'bal' => '16', 'cam' => 'ch01'),
                 array('badge' => '23206A', 'time' => '14:03:28', 'bal' => '16', 'cam' => 'ch01'),
-            )
+            )*/
         );
-        $this->tree['2014-11-04'] = array(
+        /*$this->tree['2014-11-04'] = array(
             'box5' => array(
                 array('badge' => '234ADB', 'time' => '13:10:01', 'bal' => '9', 'cam' => 'ch02'),
                 array('badge' => '233F78', 'time' => '11:47:09', 'bal' => '10', 'cam' => 'ch04'),
@@ -396,7 +396,7 @@ class CatTree
                 array('badge' => '1FC650', 'time' => '12:14:27', 'bal' => 7, 'cam' => 'ch0'),
                 array('badge' => '5A00D4', 'time' => '12:08:19', 'bal' => 7, 'cam' => 'ch0'),
             ),
-        );
+        );*/
     }
 
     public function getForDate($date)
