@@ -15,9 +15,8 @@ class DefaultController extends Controller
      */
     public function indexAction($name)
     {
-        $tree = new CatTree();
-        var_dump($tree->getForDate('2014-11-04'));
-        die('stop');
+        $this->get('learning_core.video_extractor')->process();
+
         return array('name' => $name);
     }
 }

@@ -13,7 +13,7 @@ class CatTree
 
     public function build()
     {
-        $this->tree['3114'] = array(
+        $this->tree['2014-11-03'] = array(
             'Box5' => array(
                 array('badge' => '224ADB', 'time' => '11:42:58', 'bal' => '9'),
                 array('badge' => '233F78', 'time' => '11:46:37', 'bal' => '9'),
@@ -60,7 +60,7 @@ class CatTree
                 array('badge' => '23206A', 'time' => '13:58:28', 'bal' => '16'),
             )
         );
-        $this->tree['4114'] = array(
+        $this->tree['2014-11-04'] = array(
             'box5' => array(
                 array('badge' => '234ADB', 'time' => '13:05:01', 'bal' => '9'),
                 array('badge' => '233F78', 'time' => '11:42:09', 'bal' => '10'),
@@ -107,7 +107,7 @@ class CatTree
                 array('badge' => '23206A', 'time' => '15:46:24', 'bal' => '16'),
             )
         );
-        $this->tree['5114'] = array(
+        $this->tree['2014-11-05'] = array(
             'box5' => array(
                 array('badge' => '234ADB', 'time' => '11:42:18', 'bal' => 10),
                 array('badge' => '233F78', 'time' => '13:48:25', 'bal' => 10),
@@ -154,7 +154,7 @@ class CatTree
                 array('badge' => '23206A', 'time' => '12:00:03', 'bal' => 16),
             ),
         );
-        $this->tree['6114'] = array(
+        $this->tree['2014-11-06'] = array(
             'box5' => array(
                 array('badge' => '234ADB', 'time' => '11:38:52', 'bal' => 10),
                 array('badge' => '233F78', 'time' => '12:46:17', 'bal' => 9),
@@ -201,7 +201,7 @@ class CatTree
                 array('badge' => '23206A', 'time' => '12:48:39', 'bal' => 16),
             ),
         );
-        $this->tree['17114'] = array(
+        $this->tree['2014-11-17'] = array(
             'box1' => array(
                 array('badge' => '5A0031', 'time' => '12:02:49', 'bal' => 1),
                 array('badge' => '1FC692', 'time' => '12:16:50', 'bal' => 1),
@@ -250,7 +250,7 @@ class CatTree
                 array('badge' => '5A00D4', 'time' => '13:40:42', 'bal' => 8),
             )
         );
-        $this->tree['18114'] = array(
+        $this->tree['2014-11-18'] = array(
             'box1' => array(
                 array('badge' => '5A0031', 'time' => '12:06:18', 'bal' => 1),
                 array('badge' => '1FC692', 'time' => '17:25:29', 'bal' => 2),
@@ -299,7 +299,7 @@ class CatTree
                 array('badge' => '5A00D4', 'time' => '15:05:14', 'bal' => 8),
             ),
         );
-        $this->tree['19114'] = array(
+        $this->tree['2014-11-19'] = array(
             'box1' => array(
                 array('badge' => '5A0031', 'time' => '11:58:22', 'bal' => 1),
                 array('badge' => '1FC692', 'time' => '12:15:48', 'bal' => 2),
@@ -348,13 +348,13 @@ class CatTree
                 array('badge' => '5A00D4', 'time' => '12:09:32', 'bal' => 7),
             ),
         );
-        $this->tree['20114'] = array(
+        $this->tree['2014-11-20'] = array(
             'box1' => array(
                 array('badge' => '5A0031', 'time' => '12:09:31', 'bal' => 1),
                 array('badge' => '1FC692', 'time' => '17:15:22', 'bal' => 1),
                 array('badge' => '1FC69C', 'time' => '13:11:30', 'bal' => 2),
                 array('badge' => '2D2081', 'time' => '11:58:50', 'bal' => 1),
-                array('badge' => '1B26D', 'time' => '11:55:54', 'bal' => 1),
+                array('badge' => '1B26D',  'time' => '11:55:54', 'bal' => 1),
                 array('badge' => '234B49', 'time' => '13:29:59', 'bal' => 1),
                 array('badge' => '1FC641', 'time' => '19:31:07', 'bal' => 1),
                 array('badge' => '5A000B', 'time' => '18:50:08', 'bal' => 1),
@@ -399,17 +399,33 @@ class CatTree
         );
     }
 
+    public function getTimesForEntry($bal, $date, $hour/*, $camera*/)
+    {
+        if (!empty($this->tree[$date])) {
+            $times = array();
+
+            foreach ($this->tree[$date] as $box => $items) {
+                foreach ($items as $item) {
+                    if ($item['bal'] == $bal) {
+                        $times[] = $item['time'];
+                    }
+                }
+            }
+            sort($times);
+            return $times;
+        }
+    }
+
     public function getForDate($date)
     {
-        if (!preg_match('/^\d{4}-(\d{2})-(\d{2})$/', $date, $matches)) {
-            throw new \Exception("Date malformée");
+        if (!isset($this->tree[$date])) {
+            throw new \Exception("Date introuvable");
         }
+        return $this->tree[$date];
+    }
 
-        $key = (int) $matches[2].$matches[1] . 4;
-
-        if (!isset($this->tree[$key])) {
-            throw new \Exception("Date $date ($key) introuvable");
-        }
-        return $this->tree[$key];
+    public function getTree()
+    {
+        return $this->tree;
     }
 }

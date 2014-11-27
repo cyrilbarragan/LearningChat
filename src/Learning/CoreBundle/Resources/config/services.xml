@@ -4,13 +4,14 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
-    <!--
+
     <services>
-        <service id="learning_core.example" class="Learning\CoreBundle\Example">
-            <argument type="service" id="service_id" />
-            <argument>plain_value</argument>
-            <argument>%parameter_name%</argument>
+        <service id="learning_core.cattree" class="Learning\CoreBundle\Utils\CatTree"></service>
+
+        <service id="learning_core.video_extractor" class="Learning\CoreBundle\Utils\VideoExtractor">
+            <argument type="service" id="dubture_ffmpeg.ffmpeg" />
+            <argument type="service" id="learning_core.cattree" />
         </service>
     </services>
-    -->
+
 </container>
