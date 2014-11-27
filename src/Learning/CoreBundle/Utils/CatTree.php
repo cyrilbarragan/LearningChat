@@ -399,23 +399,6 @@ class CatTree
         );
     }
 
-    public function getTimesForEntry($bal, $date, $hour/*, $camera*/)
-    {
-        if (!empty($this->tree[$date])) {
-            $times = array();
-
-            foreach ($this->tree[$date] as $box => $items) {
-                foreach ($items as $item) {
-                    if ($item['bal'] == $bal) {
-                        $times[] = $item['time'];
-                    }
-                }
-            }
-            sort($times);
-            return $times;
-        }
-    }
-
     public function getForDate($date)
     {
         if (!isset($this->tree[$date])) {

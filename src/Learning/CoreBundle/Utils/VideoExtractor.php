@@ -6,6 +6,9 @@ class VideoExtractor
 {
     // seconds
     const CLIP_DURATION = 600;
+    const VIDEO_PATH = '../web/videos';
+    const VIDEO_CLIPPED_PATH = '../web/videosclipped';
+
 
     protected $ffmpeg;
     protected $tree;
@@ -24,18 +27,82 @@ class VideoExtractor
 
     public function process()
     {
-        foreach ($this->getVideos() as $videoFilename) {
-            $data = $this->extractData($videoFilename);
+        foreach ($this->tree->getTree() as $date => $boxes) {
 
-var_dump($data);
-var_dump($this->tree->getTimesForEntry($data['bal'], $data['date'], $data['hour']));
-die('stop');
-            if ($times = $this->tree->getTimesForEntry($data['bal'], $data['date'], $data['hour'])) {
+            foreach ($boxes as $boxId => $items) {
+                foreach ($items as $item) {
+                    $matchingVideo;
+                    foreach ($this->getPossiblesVideosForItem($item, $date) as $video) {
+                        if ($item['time'] >= $video['time']) {
+                            $matchingVideo = $video['filename'];
+                        }
+                    }
 
-            } else {
-                $this->logError("$videoFilename ne correspond à aucune donnée de l'arbre");
+                    if (empty($matchingVideo)) {
+                        $this->logError(sprintf("Aucune video trouvée pour Badge : %s, Cam : %s, Bal : %s, Time : %s"));
+                    } else {
+                        $this->processVideo($video['filename'], $item['time']);
+                    }
+                }
             }
         }
+    }
+
+    public function clipsPath($filename)
+    {
+        return self::VIDEO_CLIPPED_PATH . "/" . basename($filename);
+    }
+
+    public function processVideo($videoFilename, $timeStart)
+    {
+        $start = \FFMpeg\Coordinate\TimeCode::fromSeconds($timeStart);
+        $duration = \FFMpeg\Coordinate\TimeCode::fromSeconds(self::CLIP_DURATION);
+
+        try {
+            $video = $this->ffmpeg->open($videoFilename);
+        } catch (\RuntimeException $e) {
+            $this->logError("Impossible d'ouvrir $videoFilename \nException : ". $e->getMessage());
+        }
+
+        try {
+            $video->filters()->clip($start, $duration);
+            $video->save($format, $this->clipsPath($videoFilename));
+        } catch (\RuntimeException $e) {
+            $this->logError("Impossible de couper /sauvegarder $videoFilename \nException : ". $e->getMessage());
+        }
+    }
+
+    public function getPossiblesVideosForItem($item, $date)
+    {
+        $timestamp = strtotime($date);
+        $shortDate = date('dm', $timestamp);
+        $longDate = date('Ymd', $timestamp);
+
+        $pattern = sprintf("/^bal%02d-%04d-%s_%s(\d{6}).mp4$/", $item['bal'], $shortDate, $item['cam'], $longDate);
+
+        $directoryIterator = new \RecursiveDirectoryIterator(self::VIDEO_PATH);
+        $iterator = new \RecursiveIteratorIterator($directoryIterator);
+
+        $videos = array();
+        foreach ($iterator as $name => $object) {
+            $filename = $object->getFilename();
+
+            if (preg_match($pattern, $filename, $matches)) {
+                $videos[] = array('filename' => $object->getRealPath(), 'time' => $matches[1]);
+            }
+        }
+
+        if (empty($videos)) {
+            $this->logError("Aucune vidéo de correspond à ce pattern $pattern");
+        }
+        return $videos;
+    }
+
+    public function getVideo($item)
+    {
+        return $this->extractData($item);
+        var_dump($item);
+        die('stop');
     }
 
     public function extractData($filename)
@@ -49,29 +116,6 @@ die('stop');
         } else {
             $this->logError("Nom de fichier non conforme : $filename");
         }
-    }
-
-    public function getVideos()
-    {
-        $directoryIterator = new \RecursiveDirectoryIterator('../web/videos');
-        $iterator = new \RecursiveIteratorIterator($directoryIterator);
-
-        $result = array();
-        foreach ($iterator as $name => $object) {
-            if ("mp4" === $object->getExtension()) {
-                $result[] = $object->getFilename();
-            }
-        }
-        return $result;
-    }
-
-    protected function resolveVideoName($date, $box, $item)
-    {
-        $filename = sprintf("bal%s_%s_ch%s_", $item['bal'], $this->formatDate($date));
-        var_dump($filename);
-        die('stop');
-        var_dump($date, $box, $item);
-        die('stop');
     }
 
     protected function formatDate($date)
