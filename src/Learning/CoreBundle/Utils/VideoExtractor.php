@@ -6,12 +6,13 @@ class VideoExtractor
 {
     // seconds
     const CLIP_DURATION = 600;
-    const VIDEO_PATH = '../web/videos';
-    const VIDEO_CLIPPED_PATH = '../web/videosclipped';
+    const VIDEO_PATH = 'web/videos';
+    const VIDEO_CLIPPED_PATH = 'web/videosclipped';
 
 
     protected $ffmpeg;
     protected $tree;
+    protected $log = array('errors' => array(), 'info' => array());
 
     public function __construct($ffmpeg, $tree)
     {
@@ -21,8 +22,7 @@ class VideoExtractor
 
     protected function logError($msg)
     {
-        var_dump($msg);
-        die('stop');
+        $this->log['errors'][] = $msg;
     }
 
     public function process()
@@ -41,7 +41,7 @@ class VideoExtractor
                     if (empty($matchingVideo)) {
                         $this->logError(sprintf("Aucune video trouvée pour Badge : %s, Cam : %s, Bal : %s, Time : %s"));
                     } else {
-                        $this->processVideo($video['filename'], $item['time']);
+                        $this->processVideo($video['filename'], $item['time'], $video['time']);
                     }
                 }
             }
@@ -53,38 +53,31 @@ class VideoExtractor
         return self::VIDEO_CLIPPED_PATH . "/" . basename($filename);
     }
 
-    public function processVideo($videoFilename, $timeStart)
+    public function processVideo($videoFilename, $timeStart, $videoTimeStart)
     {
-        //var_dump($timeStart); die;
-
         $destFilename = self::VIDEO_CLIPPED_PATH . "/" . str_replace(':', '', $timeStart) . '_' .  basename($videoFilename);
-        $cmd = "ffmpeg -ss $timeStart -i $videoFilename -t 00:05:00 -c copy $destFilename";
-        var_dump("ffmpeg -ss $timeStart -i $videoFilename -t 00:05:00 -c copy $destFilename");
-        shell_exec($cmd);
 
-        /*
-        $format = new \FFMpeg\Format\Video\X264();
-        $format->on('progress', function ($video, $format, $percentage) {
-            echo "$percentage % transcoded";
-        });
-
-
-        $start = \FFMpeg\Coordinate\TimeCode::fromSeconds(600);
-        $duration = \FFMpeg\Coordinate\TimeCode::fromSeconds(self::CLIP_DURATION);
-
-        try {
-            $video = $this->ffmpeg->open($videoFilename);
-        } catch (\RuntimeException $e) {
-            $this->logError("Impossible d'ouvrir $videoFilename \nException : ". $e->getMessage());
+        if (!preg_match('/^(\d{2})(\d{2})(\d{2})$/', $videoTimeStart, $matches)) {
+            $this->logError("Heure de départ vidéo incorrecte : $videoTimeStart");
         }
-        $filename = $this->clipsPath($videoFilename);
-        try {
-            $video->filters()->clip($start, $duration);
-            $video->save($format, $filename);
-        } catch (\RuntimeException $e) {
-            $this->logError("Impossible de couper /sauvegarder $filename \nException : ". $e->getMessage());
+
+        $videoTimeStart = ($matches[1] * 3600) + ($matches[2] * 60) + $matches[3];
+
+        if (!preg_match('/^(\d{2}):(\d{2}):(\d{2})$/', $timeStart, $matches)) {
+            $this->logError("Heure incorrecte : $timeStart");
         }
-        */
+
+        $timeStart = ($matches[1] * 3600) + ($matches[2] * 60) + $matches[3];
+        $timeStart = ($timeStart - $videoTimeStart);
+
+        $cmd = "avconv -ss $timeStart -i $videoFilename -t ".self::CLIP_DURATION." -c copy $destFilename";
+        exec($cmd, $output, $return);
+
+        if (!$return) {
+            $this->logInfo("$destFilename créé");
+        } else {
+            $this->logError("La commande a échoué : \n$cmd");
+        }
     }
 
     public function getPossiblesVideosForItem($item, $date)
@@ -137,5 +130,20 @@ class VideoExtractor
     {
         $year = substr(date('y'), 1, 2);
         return sprintf("%04d%d", date('d'), date('m'), $year);
+    }
+
+    public function getErrors()
+    {
+        return $this->log['errors'];
+    }
+
+    public function getInfos()
+    {
+        return $this->log['info'];
+    }
+
+    public function logInfo($msg)
+    {
+        $this->log['info'][] = $msg;
     }
 }
