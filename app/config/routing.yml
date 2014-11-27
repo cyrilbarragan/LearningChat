@@ -1,0 +1,5 @@
+learning_ffmpeg:
+    resource: "@LearningCoreBundle/Controller/"
+    type:     annotation
+    prefix:   /
+

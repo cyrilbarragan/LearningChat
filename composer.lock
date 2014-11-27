@@ -4,8 +4,65 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "0f5bf28fac35560dbdb2e597d32df056",
+    "hash": "e326954ac4091aa49b3cb87e4fbd655a",
     "packages": [
+        {
+            "name": "alchemy/binary-driver",
+            "version": "1.5.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/alchemy-fr/BinaryDriver.git",
+                "reference": "b32c03d4b56ce29f783051eac55887adae654b41"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/alchemy-fr/BinaryDriver/zipball/b32c03d4b56ce29f783051eac55887adae654b41",
+                "reference": "b32c03d4b56ce29f783051eac55887adae654b41",
+                "shasum": ""
+            },
+            "require": {
+                "evenement/evenement": "~1.0",
+                "monolog/monolog": "~1.3",
+                "php": ">=5.3.3",
+                "psr/log": "~1.0",
+                "symfony/process": "~2.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~3.7"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Alchemy": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Romain Neutron",
+                    "email": "imprec@gmail.com",
+                    "homepage": "http://www.lickmychip.com/"
+                },
+                {
+                    "name": "nlegoff",
+                    "email": "legoff.n@gmail.com"
+                },
+                {
+                    "name": "Phraseanet Team",
+                    "email": "info@alchemy.fr",
+                    "homepage": "http://www.phraseanet.com/"
+                }
+            ],
+            "description": "A set of tools to build binary drivers",
+            "keywords": [
+                "binary",
+                "driver"
+            ],
+            "time": "2013-06-21 15:51:20"
+        },
         {
             "name": "doctrine/annotations",
             "version": "v1.2.1",
@@ -614,6 +671,46 @@
             "time": "2014-10-06 13:22:50"
         },
         {
+            "name": "evenement/evenement",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/igorw/evenement.git",
+                "reference": "fa966683e7df3e5dd5929d984a44abfbd6bafe8d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/igorw/evenement/zipball/fa966683e7df3e5dd5929d984a44abfbd6bafe8d",
+                "reference": "fa966683e7df3e5dd5929d984a44abfbd6bafe8d",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Evenement": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Igor Wiedler",
+                    "email": "igor@wiedler.ch",
+                    "homepage": "http://wiedler.ch/igor/"
+                }
+            ],
+            "description": "Événement is a very simple event dispatching library for PHP 5.3",
+            "keywords": [
+                "event-dispatcher"
+            ],
+            "time": "2012-05-30 15:01:08"
+        },
+        {
             "name": "incenteev/composer-parameter-handler",
             "version": "v2.1.0",
             "target-dir": "Incenteev/ParameterHandler",
@@ -862,6 +959,115 @@
             "time": "2014-09-30 13:30:58"
         },
         {
+            "name": "neutron/temporary-filesystem",
+            "version": "2.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/romainneutron/Temporary-Filesystem.git",
+                "reference": "6b21fa99fd452efea16b9a7adb7304ccfff854d0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/romainneutron/Temporary-Filesystem/zipball/6b21fa99fd452efea16b9a7adb7304ccfff854d0",
+                "reference": "6b21fa99fd452efea16b9a7adb7304ccfff854d0",
+                "shasum": ""
+            },
+            "require": {
+                "symfony/filesystem": "~2.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~3.7"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Neutron": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Romain Neutron",
+                    "email": "imprec@gmail.com",
+                    "homepage": "http://www.lickmychip.com/"
+                }
+            ],
+            "description": "Symfony filesystem extension to handle temporary files",
+            "time": "2013-10-10 10:58:09"
+        },
+        {
+            "name": "php-ffmpeg/php-ffmpeg",
+            "version": "0.5.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/PHP-FFMpeg/PHP-FFMpeg.git",
+                "reference": "c8949fe3df89edd7692368cc110a51a27971f28a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/PHP-FFMpeg/PHP-FFMpeg/zipball/c8949fe3df89edd7692368cc110a51a27971f28a",
+                "reference": "c8949fe3df89edd7692368cc110a51a27971f28a",
+                "shasum": ""
+            },
+            "require": {
+                "alchemy/binary-driver": "~1.5",
+                "doctrine/cache": "~1.0",
+                "evenement/evenement": "~1.0",
+                "neutron/temporary-filesystem": "~2.1, >=2.1.1",
+                "php": ">=5.3.3"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~3.7",
+                "sami/sami": "~1.0",
+                "silex/silex": "~1.0"
+            },
+            "suggest": {
+                "php-ffmpeg/extras": "A compilation of common audio & video drivers for PHP-FFMpeg"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.5-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "FFMpeg": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Romain Neutron",
+                    "email": "imprec@gmail.com",
+                    "homepage": "http://www.lickmychip.com/"
+                },
+                {
+                    "name": "Phraseanet Team",
+                    "email": "info@alchemy.fr",
+                    "homepage": "http://www.phraseanet.com/"
+                }
+            ],
+            "description": "FFMpeg PHP, an Object Oriented library to communicate with AVconv / ffmpeg",
+            "keywords": [
+                "audio",
+                "audio processing",
+                "avconv",
+                "avprobe",
+                "ffmpeg",
+                "ffprobe",
+                "video",
+                "video processing"
+            ],
+            "time": "2014-08-26 08:46:56"
+        },
+        {
             "name": "psr/log",
             "version": "1.0.0",
             "source": {
@@ -898,6 +1104,47 @@
                 "psr-3"
             ],
             "time": "2012-12-21 11:40:51"
+        },
+        {
+            "name": "pulse00/ffmpeg-bundle",
+            "version": "dev-master",
+            "target-dir": "Dubture/FFmpegBundle",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/pulse00/ffmpeg-bundle.git",
+                "reference": "1169100c5f7e577abdab16506e2104aa2b54de86"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/pulse00/ffmpeg-bundle/zipball/1169100c5f7e577abdab16506e2104aa2b54de86",
+                "reference": "1169100c5f7e577abdab16506e2104aa2b54de86",
+                "shasum": ""
+            },
+            "require": {
+                "php-ffmpeg/php-ffmpeg": "0.5.*@dev"
+            },
+            "type": "symfony-bundle",
+            "autoload": {
+                "psr-0": {
+                    "Dubture\\FFmpegBundle": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Robert Gruendler",
+                    "email": "r.gruendler@gmail.com"
+                }
+            ],
+            "description": "Symfony bundle to provide PHP-FFmpeg as a Symfony service (https://github.com/alchemy-fr/PHP-FFmpeg)",
+            "keywords": [
+                "ffmpeg",
+                "multimedia"
+            ],
+            "time": "2014-08-27 19:29:04"
         },
         {
             "name": "sensio/distribution-bundle",
@@ -1559,7 +1806,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "pulse00/ffmpeg-bundle": 20
+    },
     "prefer-stable": false,
     "platform": {
         "php": ">=5.3.3"
