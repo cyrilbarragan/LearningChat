@@ -10,6 +10,8 @@ class VideoExtractor
     const VIDEO_CLIPPED_PATH = 'web/videosclipped';
 
 
+    protected $dry = false;
+    protected $commandes = array();
     protected $ffmpeg;
     protected $tree;
     protected $log = array('errors' => array(), 'info' => array());
@@ -25,8 +27,10 @@ class VideoExtractor
         $this->log['errors'][] = $msg;
     }
 
-    public function process()
+    public function process($dry = false)
     {
+        $this->dry = $dry;
+
         foreach ($this->tree->getTree() as $date => $boxes) {
 
             foreach ($boxes as $boxId => $items) {
@@ -71,13 +75,25 @@ class VideoExtractor
         $timeStart = ($timeStart - $videoTimeStart);
 
         $cmd = "avconv -ss $timeStart -i $videoFilename -t ".self::CLIP_DURATION." -c copy $destFilename";
-        exec($cmd, $output, $return);
+        $this->commandes[] = $cmd;
+
+        if (!$this->dry) {
+            exec($cmd, $output, $return);
+        } else {
+            return;
+        }
+
 
         if (!$return) {
             $this->logInfo("$destFilename créé");
         } else {
             $this->logError("La commande a échoué : \n$cmd");
         }
+    }
+
+    public function getCommandes()
+    {
+        return $this->commandes;
     }
 
     public function getPossiblesVideosForItem($item, $date)
