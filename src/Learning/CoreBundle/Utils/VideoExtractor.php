@@ -32,7 +32,6 @@ class VideoExtractor
         $this->dry = $dry;
 
         foreach ($this->tree->getTree() as $date => $boxes) {
-
             foreach ($boxes as $boxId => $items) {
                 foreach ($items as $item) {
                     $matchingVideo = null;

@@ -1,12 +1,22 @@
 {% extends '::base.html.twig' %}
 
 {% block body %}
-    <video id="example_video_1" class="video-js vjs-default-skin"
-           controls preload="auto" width="640" height="264"
-        <source src="{{ path }}" type='video/mp4' />
-        <p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading to a web browser that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a></p>
-    </video>
+    <div class="row">
+        <div class="col-md-12">
+            <h2>{{ description }}</h2>
+            <video id="example_video_1" class="video-js vjs-default-skin"
+                controls preload="auto" width="640"
+                <source src="{{ path }}" type='video/mp4' />
+                <p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading to a web browser that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a></p>
+            </video>
+        </div>
+    </div>
 
+    <div class="row">
+        <div class="col-md-12">
+            <a style="margin-top:1em;" href="{{ path('homepage') }}" class="btn btn-default">Retour à la liste</a>
+        </div>
+    </div>
 {% endblock %}
 
 {% block stylesheets %}
