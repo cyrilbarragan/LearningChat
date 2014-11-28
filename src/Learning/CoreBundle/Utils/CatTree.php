@@ -109,16 +109,16 @@ class CatTree
         );
         $this->tree['2014-11-05'] = array(
             'box5' => array(
-                array('badge' => '234ADB', 'time' => '11:42:18', 'bal' => 10, 'cam' => 'ch04'),
-                array('badge' => '233F78', 'time' => '13:48:25', 'bal' => 10, 'cam' => 'ch04'),
-                array('badge' => '1FA5B3', 'time' => '11:48:59', 'bal' => 10, 'cam' => 'ch04'),
-                array('badge' => '2D58D6', 'time' => '14:01:02', 'bal' => 10, 'cam' => 'ch04'),
-                array('badge' => '2D58AA', 'time' => '15:34:28', 'bal' => 10, 'cam' => 'ch04'),
+                array('badge' => '234ADB', 'time' => '11:42:18', 'bal' => 10, 'cam' => 'ch01'),
+                array('badge' => '233F78', 'time' => '13:48:25', 'bal' => 10, 'cam' => 'ch01'),
+                array('badge' => '1FA5B3', 'time' => '11:48:59', 'bal' => 10, 'cam' => 'ch01'),
+                array('badge' => '2D58D6', 'time' => '14:01:02', 'bal' => 10, 'cam' => 'ch01'),
+                array('badge' => '2D58AA', 'time' => '15:34:28', 'bal' => 10, 'cam' => 'ch01'),
                 array('badge' => '233F61', 'time' => '11:33:26', 'bal' =>  9, 'cam' => 'ch02'),
-                array('badge' => '2D66C5', 'time' => '11:33:30', 'bal' => 10, 'cam' => 'ch04'),
-                array('badge' => '2D6E16', 'time' => '14:55:45', 'bal' => 10, 'cam' => 'ch04'),
-                array('badge' => '23208F', 'time' => '11:39:41', 'bal' => 10, 'cam' => 'ch04'),
-                array('badge' => '232080', 'time' => '15:02:04', 'bal' => 10, 'cam' => 'ch04'),
+                array('badge' => '2D66C5', 'time' => '11:33:30', 'bal' => 10, 'cam' => 'ch01'),
+                array('badge' => '2D6E16', 'time' => '14:55:45', 'bal' => 10, 'cam' => 'ch01'),
+                array('badge' => '23208F', 'time' => '11:39:41', 'bal' => 10, 'cam' => 'ch01'),
+                array('badge' => '232080', 'time' => '15:02:04', 'bal' => 10, 'cam' => 'ch01'),
             ),
             'box6' => array(
                 array('badge' => '233F6E', 'time' => '11:34:15', 'bal' => 11, 'cam' => 'ch0'),

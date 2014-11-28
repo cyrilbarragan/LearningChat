@@ -1,1 +1,9 @@
-Hello {{ name }}!
+{% extends '::base.html.twig' %}
+
+{% block body %}
+    <ul>
+        {% for video in videos %}
+            <li><a href="{{ path("show_video", { 'pathVideo' : video.getBaseName() }) }}">{{ video }}</a></li>
+        {% endfor %}
+    </ul>
+{% endblock %}

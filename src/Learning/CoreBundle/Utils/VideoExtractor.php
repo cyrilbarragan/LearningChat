@@ -38,7 +38,7 @@ class VideoExtractor
                     $matchingVideo = null;
                     foreach ($this->getPossiblesVideosForItem($item, $date) as $video) {
                         if ($item['time'] >= $video['time']) {
-                            $matchingVideo = $video['filename'];
+                            $matchingVideo = $video;
                         }
                     }
 
