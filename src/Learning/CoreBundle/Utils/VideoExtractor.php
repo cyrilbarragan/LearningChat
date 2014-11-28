@@ -38,7 +38,7 @@ class VideoExtractor
                     $matchingVideo = null;
                     foreach ($this->getPossiblesVideosForItem($item, $date) as $video) {
                         if ($item['time'] >= $video['time']) {
-                            $matchingVideo = $video['filename'];
+                            $matchingVideo = $video;
                         }
                     }
 
@@ -124,7 +124,7 @@ class VideoExtractor
             if (preg_match($pattern, $filename, $matches)) {
                 $videoSeconds = $this->convertToSeconds($matches[1], true);
 
-                if ($itemSeconds >= $videoSeconds ) {
+                if ($itemSeconds >= $videoSeconds) {
                     $videos[] = array('filename' => $object->getRealPath(), 'time' => $matches[1]);
                 }
             }
