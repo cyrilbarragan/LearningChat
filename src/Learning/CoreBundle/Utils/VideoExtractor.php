@@ -35,7 +35,7 @@ class VideoExtractor
 
             foreach ($boxes as $boxId => $items) {
                 foreach ($items as $item) {
-                    $matchingVideo;
+                    $matchingVideo = null;
                     foreach ($this->getPossiblesVideosForItem($item, $date) as $video) {
                         if ($item['time'] >= $video['time']) {
                             $matchingVideo = $video['filename'];
@@ -43,9 +43,9 @@ class VideoExtractor
                     }
 
                     if (empty($matchingVideo)) {
-                        $this->logError(sprintf("Aucune video trouvée pour Badge : %s, Cam : %s, Bal : %s, Time : %s", $item['badge'], $item['cam'], $item['bal'], $item['time']));
+                        $this->logError(sprintf("Aucune video trouvée pour Date : $date, Badge : %s, Cam : %s, Bal : %s, Time : %s", $item['badge'], $item['cam'], $item['bal'], $item['time']));
                     } else {
-                        $this->processVideo($video['filename'], $item['time'], $video['time']);
+                        $this->processVideo($matchingVideo['filename'], $item['time'], $matchingVideo['time']);
                     }
                 }
             }
@@ -124,7 +124,7 @@ class VideoExtractor
             if (preg_match($pattern, $filename, $matches)) {
                 $videoSeconds = $this->convertToSeconds($matches[1], true);
 
-                if ($videoSeconds >= $itemSeconds) {
+                if ($itemSeconds >= $videoSeconds ) {
                     $videos[] = array('filename' => $object->getRealPath(), 'time' => $matches[1]);
                 }
             }
