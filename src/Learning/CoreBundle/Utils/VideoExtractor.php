@@ -43,7 +43,7 @@ class VideoExtractor
                     }
 
                     if (empty($matchingVideo)) {
-                        $this->logError(sprintf("Aucune video trouvée pour Badge : %s, Cam : %s, Bal : %s, Time : %s"));
+                        $this->logError(sprintf("Aucune video trouvée pour Badge : %s, Cam : %s, Bal : %s, Time : %s", $item['badge'], $item['cam'], $item['bal'], $item['time']));
                     } else {
                         $this->processVideo($video['filename'], $item['time'], $video['time']);
                     }
@@ -57,24 +57,31 @@ class VideoExtractor
         return self::VIDEO_CLIPPED_PATH . "/" . basename($filename);
     }
 
+    public function convertToSeconds($time, $video = false)
+    {
+        $pattern = '/^(\d{2}):(\d{2}):(\d{2})$/';
+        if ($video) {
+            $pattern = '/^(\d{2})(\d{2})(\d{2})$/';
+        }
+        if (!preg_match($pattern, $time, $matches)) {
+            $this->logError("Heure incorrecte : $time");
+        }
+        return ($matches[1] * 3600) + ($matches[2] * 60) + $matches[3];
+    }
+
+    public function convertToHis($time)
+    {
+        return sprintf('%02d:%02d:%02d', ($time/3600),($time/60%60), $time%60);
+    }
+
     public function processVideo($videoFilename, $timeStart, $videoTimeStart)
     {
         $destFilename = self::VIDEO_CLIPPED_PATH . "/" . str_replace(':', '', $timeStart) . '_' .  basename($videoFilename);
 
-        if (!preg_match('/^(\d{2})(\d{2})(\d{2})$/', $videoTimeStart, $matches)) {
-            $this->logError("Heure de départ vidéo incorrecte : $videoTimeStart");
-        }
-
-        $videoTimeStart = ($matches[1] * 3600) + ($matches[2] * 60) + $matches[3];
-
-        if (!preg_match('/^(\d{2}):(\d{2}):(\d{2})$/', $timeStart, $matches)) {
-            $this->logError("Heure incorrecte : $timeStart");
-        }
-
-        $timeStart = ($matches[1] * 3600) + ($matches[2] * 60) + $matches[3];
+        $videoTimeStart = $this->convertToSeconds($videoTimeStart, true);
+        $timeStart = $this->convertToSeconds($timeStart);
         $timeStart = ($timeStart - $videoTimeStart);
-
-        $timeStart = sprintf('%02d:%02d:%02d', ($timeStart/3600),($timeStart/60%60), $timeStart%60);
+        $timeStart = $this->convertToHis($timeStart);
 
         $cmd = "avconv -ss $timeStart -i $videoFilename -t ".self::CLIP_DURATION." -c copy $destFilename";
         $this->commandes[] = $cmd;
@@ -84,7 +91,6 @@ class VideoExtractor
         } else {
             return;
         }
-
 
         if (!$return) {
             $this->logInfo("$destFilename créé");
@@ -104,6 +110,8 @@ class VideoExtractor
         $shortDate = date('dm', $timestamp);
         $longDate = date('Ymd', $timestamp);
 
+        $itemSeconds = $this->convertToSeconds($item['time']);
+
         $pattern = sprintf("/^bal%02d-%04d-%s_%s(\d{6}).mp4$/", $item['bal'], $shortDate, $item['cam'], $longDate);
 
         $directoryIterator = new \RecursiveDirectoryIterator(self::VIDEO_PATH);
@@ -114,7 +122,11 @@ class VideoExtractor
             $filename = $object->getFilename();
 
             if (preg_match($pattern, $filename, $matches)) {
-                $videos[] = array('filename' => $object->getRealPath(), 'time' => $matches[1]);
+                $videoSeconds = $this->convertToSeconds($matches[1], true);
+
+                if ($videoSeconds >= $itemSeconds) {
+                    $videos[] = array('filename' => $object->getRealPath(), 'time' => $matches[1]);
+                }
             }
         }
 

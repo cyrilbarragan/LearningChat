@@ -85,14 +85,14 @@ class CatTree
                 array('badge' => '1FC66A', 'time' => '11:42:35', 'bal' => '12', 'cam' => 'ch0')
             ),
             'box7' => array(
-                array('badget' => '234AB3', 'time' => '14:01:31', 'bal' => '13', 'cam' => 'ch0'),
-                array('badget' => '2D4ECB', 'time' => '13:59:45', 'bal' => '14', 'cam' => 'ch0'),
-                array('badget' => '2D208B', 'time' => '16:02:22', 'bal' => '14', 'cam' => 'ch0'),
-                array('badget' => '2D1F92', 'time' => '11:51:41', 'bal' => '13', 'cam' => 'ch0'),
-                array('badget' => '1B808', 'time' => '14:27:53', 'bal' => '13', 'cam' => 'ch0'),
-                array('badget' => '231FBC', 'time' => '14:44:33', 'bal' => '14', 'cam' => 'ch0'),
-                array('badget' => '230311', 'time' => '14:13:43', 'bal' => '13', 'cam' => 'ch0'),
-                array('badget' => '234A7F', 'time' => '11:40:36', 'bal' => '13', 'cam' => 'ch0'),
+                array('badge' => '234AB3', 'time' => '14:01:31', 'bal' => '13', 'cam' => 'ch0'),
+                array('badge' => '2D4ECB', 'time' => '13:59:45', 'bal' => '14', 'cam' => 'ch0'),
+                array('badge' => '2D208B', 'time' => '16:02:22', 'bal' => '14', 'cam' => 'ch0'),
+                array('badge' => '2D1F92', 'time' => '11:51:41', 'bal' => '13', 'cam' => 'ch0'),
+                array('badge' => '1B808', 'time' => '14:27:53', 'bal' => '13', 'cam' => 'ch0'),
+                array('badge' => '231FBC', 'time' => '14:44:33', 'bal' => '14', 'cam' => 'ch0'),
+                array('badge' => '230311', 'time' => '14:13:43', 'bal' => '13', 'cam' => 'ch0'),
+                array('badge' => '234A7F', 'time' => '11:40:36', 'bal' => '13', 'cam' => 'ch0'),
             ),
             'box8' => array(
                 array('badge' => '2D58DB', 'time' => '13:37:49', 'bal' => '16', 'cam' => 'ch01'),

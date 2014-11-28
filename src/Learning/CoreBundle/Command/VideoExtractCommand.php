@@ -25,10 +25,14 @@ class VideoExtractCommand extends ContainerAwareCommand
 
         $extractor->process($input->getOption('dry'));
 
-        $output->writeLn(implode("\n\n", $extractor->getCommandes()));
+        $output->writeLn(implode("\n", $extractor->getCommandes()));
 
-        // foreach ($extractor->getErrors() as $error) {
-        //     $output->writeln($error);
-        // }
+        $output->writeLn("=================================");
+        $output->writeLn("              ERREURS            ");
+        $output->writeLn("=================================");
+
+        foreach ($extractor->getErrors() as $error) {
+            $output->writeln($error);
+        }
     }
 }
