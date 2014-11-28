@@ -74,6 +74,8 @@ class VideoExtractor
         $timeStart = ($matches[1] * 3600) + ($matches[2] * 60) + $matches[3];
         $timeStart = ($timeStart - $videoTimeStart);
 
+        $timeStart = sprintf('%02d:%02d:%02d', ($timeStart/3600),($timeStart/60%60), $timeStart%60);
+
         $cmd = "avconv -ss $timeStart -i $videoFilename -t ".self::CLIP_DURATION." -c copy $destFilename";
         $this->commandes[] = $cmd;
 
