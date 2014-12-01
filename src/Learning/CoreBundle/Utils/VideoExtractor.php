@@ -111,7 +111,7 @@ class VideoExtractor
 
         $itemSeconds = $this->convertToSeconds($item['time']);
 
-        $pattern = sprintf("/^bal%02d-%04d-%s_%s(\d{6}).mp4$/", $item['bal'], $shortDate, $item['cam'], $longDate);
+        $pattern = sprintf("/^bal%02d-%04d-ch\d{2}_%s(\d{6}).mp4$/", $item['bal'], $shortDate, $longDate);
 
         $directoryIterator = new \RecursiveDirectoryIterator(self::VIDEO_PATH);
         $iterator = new \RecursiveIteratorIterator($directoryIterator);
