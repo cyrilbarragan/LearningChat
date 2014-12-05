@@ -77,7 +77,7 @@ class DefaultController extends Controller
             $bal = (int) $matches[2];
             $date = date('d/m/Y', strtotime($matches[3]));
             $hour = substr($matches[3], 8);
-            return array('timestamp' => $matches[3], 'time_cat' => $timeCat,'bal' => $bal, 'date' => $date, 'hour' => $hour);
+            return array('timestamp' => $matches[3].$matches[1], 'time_cat' => $timeCat,'bal' => $bal, 'date' => $date, 'hour' => $hour);
         } else {
             // $this->logError("Nom de fichier non conforme : $filename");
         }
