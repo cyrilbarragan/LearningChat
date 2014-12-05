@@ -44,10 +44,6 @@ class DefaultController extends Controller
             );
         }
 
-        $videos['3'][0] = array('basename' => 'poulet.mp4', 'description' => 'Le 30/23/4123 à 23:23:23');
-        $videos['3'][1] = array('basename' => 'poulet.mp4', 'description' => 'Le 30/23/4123 à 23:23:23');
-        $videos['3'][2] = array('basename' => 'poulet.mp4', 'description' => 'Le 30/23/4123 à 23:23:23');
-
         return array('videos_by_bal' => $videos);
     }
 
@@ -78,7 +74,7 @@ class DefaultController extends Controller
 
             return array('time_cat' => $timeCat,'bal' => $bal, 'date' => $date, 'hour' => $hour);
         } else {
-            $this->logError("Nom de fichier non conforme : $filename");
+            // $this->logError("Nom de fichier non conforme : $filename");
         }
     }
 }
