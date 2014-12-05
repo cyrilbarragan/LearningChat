@@ -38,12 +38,18 @@ class DefaultController extends Controller
             $filename = $video->getBasename();
             $item = $this->extractData($filename);
 
-            $videos[$item['bal']][] = array(
+            $timestamp = $item['timestamp'];
+
+            $videos[$item['bal']][$timestamp] = array(
                 'basename' => $filename,
                 'description' => sprintf('Le %s à %s', $item['date'], $item['time_cat'])
             );
         }
 
+        ksort($videos);
+        foreach($videos as &$video) {
+            ksort($video);
+        }
         return array('videos_by_bal' => $videos);
     }
 
@@ -71,8 +77,7 @@ class DefaultController extends Controller
             $bal = (int) $matches[2];
             $date = date('d/m/Y', strtotime($matches[3]));
             $hour = substr($matches[3], 8);
-
-            return array('time_cat' => $timeCat,'bal' => $bal, 'date' => $date, 'hour' => $hour);
+            return array('timestamp' => $matches[3], 'time_cat' => $timeCat,'bal' => $bal, 'date' => $date, 'hour' => $hour);
         } else {
             // $this->logError("Nom de fichier non conforme : $filename");
         }

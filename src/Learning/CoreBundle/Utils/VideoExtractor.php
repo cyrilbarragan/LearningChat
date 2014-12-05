@@ -5,10 +5,9 @@ namespace Learning\CoreBundle\Utils;
 class VideoExtractor
 {
     // seconds
-    const CLIP_DURATION = 600;
+    const CLIP_DURATION = '00:10:00';
     const VIDEO_PATH = 'web/videos';
     const VIDEO_CLIPPED_PATH = 'web/videosclipped';
-
 
     protected $dry = false;
     protected $commandes = array();
@@ -82,7 +81,7 @@ class VideoExtractor
         $timeStart = ($timeStart - $videoTimeStart);
         $timeStart = $this->convertToHis($timeStart);
 
-        $cmd = "avconv -ss $timeStart -i $videoFilename -t ".self::CLIP_DURATION." -c copy $destFilename";
+        $cmd = "avconv -i $videoFilename -ss $timeStart -t ".self::CLIP_DURATION." -c copy $destFilename";
         $this->commandes[] = $cmd;
 
         if (!$this->dry) {
