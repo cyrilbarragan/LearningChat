@@ -35,7 +35,7 @@ class VideoExtractor
                 foreach ($items as $item) {
                     $matchingVideo = null;
                     foreach ($this->getPossiblesVideosForItem($item, $date) as $video) {
-                        if ($item['time'] >= $video['time']) {
+                        if ($this->convertToSeconds($item['time']) >= $this->convertToSeconds($video['time'], true)) {
                             $matchingVideo = $video;
                         }
                     }
@@ -123,10 +123,12 @@ class VideoExtractor
                 $videoSeconds = $this->convertToSeconds($matches[1], true);
 
                 if ($itemSeconds >= $videoSeconds) {
-                    $videos[] = array('filename' => $object->getRealPath(), 'time' => $matches[1]);
+                    $videos[$videoSeconds] = array('filename' => $object->getRealPath(), 'time' => $matches[1]);
                 }
             }
         }
+
+        ksort($videos);
 
         if (empty($videos)) {
             $this->logError("Aucune vidéo de correspond à ce pattern $pattern");
