@@ -8,7 +8,8 @@ class VideoExtractor
 {
     // seconds
     const CLIP_DURATION = '00:10:00';
-    const VIDEO_PATH = '../ftp/learning';
+    // const VIDEO_PATH = '../ftp/learning';
+    const VIDEO_PATH = 'web/videos';
     const VIDEO_CLIPPED_PATH = 'web/videosclipped';
 
     protected $dry = false;
@@ -127,7 +128,7 @@ class VideoExtractor
 
         $pattern = sprintf("/^bal%02d-%04d-ch\d{2}_%s(\d{6}).mp4$/", $item['bal'], $shortDate, $longDate);
 
-        $dir = self::VIDEO_PATH . "/" . $this->serie;
+        $dir = self::VIDEO_PATH;
 
         if (!is_dir($dir)) {
             throw new \Exception("Le dossier $dir n'existe pas");
@@ -140,11 +141,19 @@ class VideoExtractor
         foreach ($iterator as $name => $object) {
             $filename = $object->getFilename();
 
-            if (preg_match($pattern, $filename, $matches)) {
-                $videoSeconds = $this->convertToSeconds($matches[1], true);
+            if (preg_match('/s(e|\?)rie(\d+)/', $object->getRealPath(), $matches)) {
+                $serie = sprintf('%02d', $matches[2]);
 
-                if ($itemSeconds >= $videoSeconds) {
-                    $videos[$videoSeconds] = array('filename' => $object->getRealPath(), 'time' => $matches[1]);
+                if ($serie != $this->serie) {
+                    continue;
+                }
+
+                if (preg_match($pattern, $filename, $matches)) {
+                    $videoSeconds = $this->convertToSeconds($matches[1], true);
+
+                    if ($itemSeconds >= $videoSeconds) {
+                        $videos[$videoSeconds] = array('filename' => $object->getRealPath(), 'time' => $matches[1]);
+                    }
                 }
             }
         }
