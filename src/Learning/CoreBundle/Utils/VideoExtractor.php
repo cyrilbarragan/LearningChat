@@ -16,18 +16,12 @@ class VideoExtractor
     protected $commandes = array();
     protected $ffmpeg;
     protected $tree;
-    protected $serie;
     protected $log = array('errors' => array(), 'info' => array());
 
     public function __construct($ffmpeg, $tree)
     {
         $this->ffmpeg = $ffmpeg;
         $this->tree = $tree;
-    }
-
-    public function setSerie($serie)
-    {
-        $this->serie = $serie;
     }
 
     protected function logError($msg)
@@ -52,16 +46,11 @@ class VideoExtractor
                     if (empty($matchingVideo)) {
                         $this->logError(sprintf("Aucune video trouvée pour Date : $date, Badge : %s, Cam : %s, Bal : %s, Time : %s", $item['badge'], $item['cam'], $item['bal'], $item['time']));
                     } else {
-                        $this->processVideo($matchingVideo['filename'], $item['time'], $matchingVideo['time']);
+                        $this->processVideo($matchingVideo['filename'], $item['time'], $matchingVideo['time'], $matchingVideo['serie']);
                     }
                 }
             }
         }
-    }
-
-    public function clipsPath($filename)
-    {
-        return self::VIDEO_CLIPPED_PATH . "/" . $this->serie . "/" . basename($filename);
     }
 
     public function convertToSeconds($time, $video = false)
@@ -81,9 +70,9 @@ class VideoExtractor
         return sprintf('%02d:%02d:%02d', ($time/3600),($time/60%60), $time%60);
     }
 
-    public function processVideo($videoFilename, $timeStart, $videoTimeStart)
+    public function processVideo($videoFilename, $timeStart, $videoTimeStart, $serie)
     {
-        $destFilename = self::VIDEO_CLIPPED_PATH . "/" . $this->serie . "/". str_replace(':', '', $timeStart) . '_' .  basename($videoFilename);
+        $destFilename = self::VIDEO_CLIPPED_PATH . "/" . $serie . "/". str_replace(':', '', $timeStart) . '_' .  basename($videoFilename);
 
         $dir = dirname($destFilename);
 
@@ -144,15 +133,11 @@ class VideoExtractor
             if (preg_match('/s(e|\?)rie(\d+)/', $object->getRealPath(), $matches)) {
                 $serie = sprintf('%02d', $matches[2]);
 
-                if ($serie != $this->serie) {
-                    continue;
-                }
-
                 if (preg_match($pattern, $filename, $matches)) {
                     $videoSeconds = $this->convertToSeconds($matches[1], true);
 
                     if ($itemSeconds >= $videoSeconds) {
-                        $videos[$videoSeconds] = array('filename' => $object->getRealPath(), 'time' => $matches[1]);
+                        $videos[$videoSeconds] = array('serie' => $serie, 'filename' => $object->getRealPath(), 'time' => $matches[1]);
                     }
                 }
             }

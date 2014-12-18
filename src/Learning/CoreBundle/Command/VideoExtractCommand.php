@@ -17,7 +17,7 @@ class VideoExtractCommand extends ContainerAwareCommand
         $this
             ->setName('video:extract')
             ->setDescription('Extrait portion vidéo où les chats mangent')
-            ->addArgument('serie', InputArgument::REQUIRED, 'Dans quelle série placer les videos (01 ou 02 etc..)?')
+            // ->addArgument('serie', InputArgument::REQUIRED, 'Dans quelle série placer les videos (01 ou 02 etc..)?')
             ->addOption('dry', null, InputOption::VALUE_NONE, 'Afficher commandes')
             ->addOption('clear', null, InputOption::VALUE_NONE, 'Supprimer toutes les vidéos avants')
         ;
@@ -29,13 +29,13 @@ class VideoExtractCommand extends ContainerAwareCommand
         $extractor = $container->get('learning_core.video_extractor');
         $this->rootDir = $container->get('kernel')->getRootDir();
 
-        $serie = $input->getArgument('serie');
+        // $serie = $input->getArgument('serie');
 
-        if (!preg_match('/^\d{2}$/', $serie)) {
-            throw new \Exception("Une série est composée de 2 chiffres (ex: 03)");
-        }
+        // if (!preg_match('/^\d{2}$/', $serie)) {
+        //     throw new \Exception("Une série est composée de 2 chiffres (ex: 03)");
+        // }
 
-        $extractor->setSerie($serie);
+        // $extractor->setSerie($serie);
 
         if ($input->getOption('clear')) {
             $this->clearVideosClipped();
@@ -71,10 +71,14 @@ class VideoExtractCommand extends ContainerAwareCommand
 
     protected function clearVideosClipped()
     {
-        $path = $this->rootDir.'/../'.VideoExtractor::VIDEO_CLIPPED_PATH.'/*.mp4';
-        foreach(glob($path) as $file){ // iterate files
-          if(is_file($file))
-            unlink($file); // delete file
+        $dir = $this->rootDir.'/../'.VideoExtractor::VIDEO_CLIPPED_PATH;
+        $directoryIterator = new \RecursiveDirectoryIterator($dir);
+        $iterator = new \RecursiveIteratorIterator($directoryIterator);
+
+        foreach ($iterator as $name => $spfileinfo) {
+            if (preg_match('/\.mp4$/', $spfileinfo->getFilename())) {
+                unlink($spfileinfo->getRealPath());
+            }
         }
     }
 }
