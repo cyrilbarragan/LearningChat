@@ -6,7 +6,7 @@ class VideoExtractor
 {
     // seconds
     const CLIP_DURATION = '00:10:00';
-    const VIDEO_PATH = '../ftp/learning';
+    const VIDEO_PATH = 'web/videos';
     const VIDEO_CLIPPED_PATH = 'web/videosclipped';
 
     protected $dry = false;
@@ -35,7 +35,7 @@ class VideoExtractor
                 foreach ($items as $item) {
                     $matchingVideo = null;
                     foreach ($this->getPossiblesVideosForItem($item, $date) as $video) {
-                        if ($item['time'] >= $video['time']) {
+                        if ($this->convertToSeconds($item['time']) >= $this->convertToSeconds($video['time'], true)) {
                             $matchingVideo = $video;
                         }
                     }
@@ -123,10 +123,12 @@ class VideoExtractor
                 $videoSeconds = $this->convertToSeconds($matches[1], true);
 
                 if ($itemSeconds >= $videoSeconds) {
-                    $videos[] = array('filename' => $object->getRealPath(), 'time' => $matches[1]);
+                    $videos[$videoSeconds] = array('filename' => $object->getRealPath(), 'time' => $matches[1]);
                 }
             }
         }
+
+        ksort($videos);
 
         if (empty($videos)) {
             $this->logError("Aucune vidéo de correspond à ce pattern $pattern");
