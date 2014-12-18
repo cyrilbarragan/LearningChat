@@ -6,7 +6,7 @@ class VideoExtractor
 {
     // seconds
     const CLIP_DURATION = '00:10:00';
-    const VIDEO_PATH = 'web/videos';
+    const VIDEO_PATH = '../ftp/learning';
     const VIDEO_CLIPPED_PATH = 'web/videosclipped';
 
     protected $dry = false;
