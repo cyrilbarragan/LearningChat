@@ -2,6 +2,8 @@
 
 namespace Learning\CoreBundle\Utils;
 
+use Symfony\Component\Filesystem\Filesystem;
+
 class VideoExtractor
 {
     // seconds
@@ -13,12 +15,18 @@ class VideoExtractor
     protected $commandes = array();
     protected $ffmpeg;
     protected $tree;
+    protected $serie;
     protected $log = array('errors' => array(), 'info' => array());
 
     public function __construct($ffmpeg, $tree)
     {
         $this->ffmpeg = $ffmpeg;
         $this->tree = $tree;
+    }
+
+    public function setSerie($serie)
+    {
+        $this->serie = $serie;
     }
 
     protected function logError($msg)
@@ -52,7 +60,7 @@ class VideoExtractor
 
     public function clipsPath($filename)
     {
-        return self::VIDEO_CLIPPED_PATH . "/" . basename($filename);
+        return self::VIDEO_CLIPPED_PATH . "/" . $this->serie . "/" . basename($filename);
     }
 
     public function convertToSeconds($time, $video = false)
@@ -74,7 +82,14 @@ class VideoExtractor
 
     public function processVideo($videoFilename, $timeStart, $videoTimeStart)
     {
-        $destFilename = self::VIDEO_CLIPPED_PATH . "/" . str_replace(':', '', $timeStart) . '_' .  basename($videoFilename);
+        $destFilename = self::VIDEO_CLIPPED_PATH . "/" . $this->serie . "/". str_replace(':', '', $timeStart) . '_' .  basename($videoFilename);
+
+        $dir = dirname($destFilename);
+
+        if (!is_dir($dir)) {
+            $fs = new Filesystem();
+            $fs->mkdir($dir);
+        }
 
         $videoTimeStart = $this->convertToSeconds($videoTimeStart, true);
         $timeStart = $this->convertToSeconds($timeStart);
@@ -112,7 +127,13 @@ class VideoExtractor
 
         $pattern = sprintf("/^bal%02d-%04d-ch\d{2}_%s(\d{6}).mp4$/", $item['bal'], $shortDate, $longDate);
 
-        $directoryIterator = new \RecursiveDirectoryIterator(self::VIDEO_PATH);
+        $dir = self::VIDEO_PATH . "/" . $this->serie;
+
+        if (!is_dir($dir)) {
+            throw new \Exception("Le dossier $dir n'existe pas");
+        }
+
+        $directoryIterator = new \RecursiveDirectoryIterator($dir);
         $iterator = new \RecursiveIteratorIterator($directoryIterator);
 
         $videos = array();

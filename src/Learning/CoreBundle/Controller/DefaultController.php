@@ -21,17 +21,43 @@ class DefaultController extends Controller
      */
     public function indexAction()
     {
-
-        $finder = new Finder();
-
         $dir = $this->get('kernel')->getRootDir().'/../web/videosclipped';
 
         if (!is_dir($dir)) {
             $fs = new Filesystem();
             $fs->mkdir($dir);
         }
-        $finder->files()->name('*.mp4')->in($dir);
 
+        $series = array();
+        foreach (new \DirectoryIterator($dir) as $fileInfo) {
+            $serie = $fileInfo->getBasename();
+            if ($fileInfo->isDir() && !$fileInfo->isDot() && preg_match('/^\d{2}$/', $serie)) {
+                $series[] = $serie;
+            }
+        }
+        ksort($series);
+        return array('series' => $series);
+    }
+
+    /**
+     * @Route("/list/{serie}", name="list")
+     * @Template()
+     */
+    public function listAction($serie)
+    {
+        $dir = $this->get('kernel')->getRootDir().'/../web/videosclipped/'.$serie;
+
+        if (!is_dir($dir)) {
+            throw $this->createHttpNotFoundException("Le dossier $dir n'existe pas");
+        }
+
+        return array('videos_by_bal' => $this->getVideos($dir));
+    }
+
+    private function getVideos($dir)
+    {
+        $finder = new Finder();
+        $finder->files()->name('*.mp4')->in($dir);
 
         $videos = array();
         foreach ($finder as $video) {
@@ -50,7 +76,7 @@ class DefaultController extends Controller
         foreach($videos as &$video) {
             ksort($video);
         }
-        return array('videos_by_bal' => $videos);
+        return $videos;
     }
 
 

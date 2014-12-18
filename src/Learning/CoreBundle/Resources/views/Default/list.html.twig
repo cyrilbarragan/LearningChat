@@ -1,0 +1,23 @@
+{% extends '::base.html.twig' %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-12">
+            <h2>Premier passage chat et balance</h2>
+            {% if videos_by_bal|length > 0 %}
+                {% for bal, videos in videos_by_bal %}
+                <div style="display:inline-block;vertical-align:top;padding-left:1em;">
+                    <h3>Balance {{ bal }}</h3>
+                    <ul>
+                        {% for video in videos %}
+                        <li><a href="{{ path("show_video", { 'pathVideo' : video.basename }) }}">{{ video.description }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endfor %}
+            {% else %}
+                <p>Aucune vidéo trouvée</p>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

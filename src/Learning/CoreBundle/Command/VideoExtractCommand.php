@@ -17,6 +17,7 @@ class VideoExtractCommand extends ContainerAwareCommand
         $this
             ->setName('video:extract')
             ->setDescription('Extrait portion vidéo où les chats mangent')
+            ->addArgument('serie', InputArgument::REQUIRED, 'Dans quelle série placer les videos (01 ou 02 etc..)?')
             ->addOption('dry', null, InputOption::VALUE_NONE, 'Afficher commandes')
             ->addOption('clear', null, InputOption::VALUE_NONE, 'Supprimer toutes les vidéos avants')
         ;
@@ -27,6 +28,14 @@ class VideoExtractCommand extends ContainerAwareCommand
         $container = $this->getContainer();
         $extractor = $container->get('learning_core.video_extractor');
         $this->rootDir = $container->get('kernel')->getRootDir();
+
+        $serie = $input->getArgument('serie');
+
+        if (!preg_match('/^\d{2}$/', $serie)) {
+            throw new \Exception("Une série est composée de 2 chiffres (ex: 03)");
+        }
+
+        $extractor->setSerie($serie);
 
         if ($input->getOption('clear')) {
             $this->clearVideosClipped();
