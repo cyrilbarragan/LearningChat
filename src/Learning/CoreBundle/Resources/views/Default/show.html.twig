@@ -14,7 +14,7 @@
 
     <div class="row">
         <div class="col-md-12">
-            <a style="margin-top:1em;" href="{{ path('homepage') }}" class="btn btn-default">Retour à la liste</a>
+            <a style="margin-top:1em;" href="{{ path('list', {'serie': serie}) }}" class="btn btn-default">Retour à la série {{ serie }}</a>
         </div>
     </div>
 {% endblock %}

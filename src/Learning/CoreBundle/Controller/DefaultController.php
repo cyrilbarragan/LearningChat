@@ -51,7 +51,10 @@ class DefaultController extends Controller
             throw $this->createHttpNotFoundException("Le dossier $dir n'existe pas");
         }
 
-        return array('videos_by_bal' => $this->getVideos($dir));
+        return array(
+            'serie' => $serie,
+            'videos_by_bal' => $this->getVideos($dir)
+        );
     }
 
     private function getVideos($dir)
@@ -62,12 +65,14 @@ class DefaultController extends Controller
         $videos = array();
         foreach ($finder as $video) {
             $filename = $video->getBasename();
+            $path = $video->getRealPath();
+            $path = substr($path, strrpos($path, 'web/') + 4);
             $item = $this->extractData($filename);
 
             $timestamp = $item['timestamp'];
 
             $videos[$item['bal']][$timestamp] = array(
-                'basename' => $filename,
+                'basename' => str_replace('/', '$', $path),
                 'description' => sprintf('Le %s à %s', $item['date'], $item['time_cat'])
             );
         }
@@ -81,18 +86,24 @@ class DefaultController extends Controller
 
 
     /**
-     * @Route("/show/{pathVideo}", name="show_video")
+     * @Route("/show/{serie}/{pathVideo}", name="show_video")
      * @Template()
      */
-    public function showAction($pathVideo)
+    public function showAction($serie, $pathVideo)
     {
-        $item = $this->extractData($pathVideo);
+        $pathVideo = str_replace('$', '/', $pathVideo);
+        $item = $this->extractData(basename($pathVideo));
         $description = sprintf('Le %s à %s', $item['date'], $item['time_cat']);
         $request = $this->getRequest();
         $baseUrl = $request->getScheme() . '://' . $request->getHttpHost() . $request->getBasePath();
-        $dir = $baseUrl . '/videosclipped/';
-        $pathVideo = $dir.$pathVideo;
-        return array('path' => $pathVideo, 'description' => $description);
+
+        $pathVideo = $baseUrl . '/' . $pathVideo;
+
+        return array(
+            'serie' => $serie,
+            'path' => $pathVideo,
+            'description' => $description
+        );
     }
 
     protected function extractData($filename)
