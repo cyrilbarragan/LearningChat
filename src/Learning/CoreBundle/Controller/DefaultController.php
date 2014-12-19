@@ -32,7 +32,7 @@ class DefaultController extends Controller
         foreach (new \DirectoryIterator($dir) as $fileInfo) {
             $serie = $fileInfo->getBasename();
             if ($fileInfo->isDir() && !$fileInfo->isDot() && preg_match('/^\d{2}$/', $serie)) {
-                $series[] = $serie;
+                $series[$serie] = $serie;
             }
         }
         ksort($series);
