@@ -73,7 +73,7 @@ class DefaultController extends Controller
 
             $videos[$item['bal']][$timestamp] = array(
                 'basename' => str_replace('/', '$', $path),
-                'description' => sprintf('Le %s à %s', $item['date'], $item['time_cat'])
+                'description' => $this->getDescription($item['time_cat'], $item['date'], $item['bal'])
             );
         }
 
@@ -94,22 +94,8 @@ class DefaultController extends Controller
         $pathVideo = str_replace('$', '/', $pathVideo);
         $baseFilename = basename($pathVideo);
         $item = $this->extractData($baseFilename);
-        $description = sprintf('Le %s à %s', $item['date'], $item['time_cat']);
 
-        if (preg_match('/bal(\d{2})/i', $pathVideo, $matches)) {
-            $decalledBalls = array(09, 10, 15, 16);
-            if (in_array($matches[1], $decalledBalls)) {
-                $time = $item['time_cat'];
-                $time = date('H:i:s', (strtotime($time) - 300));
-                $description = sprintf('Le %s à %s décallé de 5min', $item['date'], $time);
-            }
-            $decalledBalls = array(11, 12, 13, 14);
-            if (in_array($matches[1], $decalledBalls)) {
-                $time = $item['time_cat'];
-                $time = date('H:i:s', (strtotime($time) - 3960));
-                $description = sprintf('Le %s à %s décallé de 1h6min', $item['date'], $time);
-            }
-        }
+        $description = $this->getDescription($item['time_cat'], $item['date'], $item['bal']);
 
         $request = $this->getRequest();
         $baseUrl = $request->getScheme() . '://' . $request->getHttpHost() . $request->getBasePath();
@@ -135,5 +121,24 @@ class DefaultController extends Controller
         } else {
             // $this->logError("Nom de fichier non conforme : $filename");
         }
+    }
+
+    protected function getDescription($timeCat, $date, $bal)
+    {
+        $description = sprintf('Le %s à %s', $date, $timeCat);
+
+        $decalledBalls = array(09, 10, 15, 16);
+        if (in_array($bal, $decalledBalls)) {
+            $time = $timeCat;
+            $time = date('H:i:s', (strtotime($time) - 300));
+            return sprintf('Le %s à %s décallé de 5min', $date, $time);
+        }
+        $decalledBalls = array(11, 12, 13, 14);
+        if (in_array($bal, $decalledBalls)) {
+            $time = $timeCat;
+            $time = date('H:i:s', (strtotime($time) - 3960));
+            return sprintf('Le %s à %s décallé de 1h6min', $date, $time);
+        }
+        return $description;
     }
 }
