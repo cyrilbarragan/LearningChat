@@ -44,7 +44,7 @@ class VideoExtractor
                     }
 
                     if (empty($matchingVideo)) {
-                        $this->logError(sprintf("Aucune video trouvée pour Date : $date, Badge : %s, Cam : %s, Bal : %s, Time : %s", $item['badge'], $item['cam'], $item['bal'], $item['time']));
+                        $this->logError(sprintf("Aucune video trouvée pour Date : $date, Badge : %s, Bal : %s, Time : %s", $item['badge'], /*$item['cam'], */$item['bal'], $item['time']));
                     } else {
                         $this->processVideo($matchingVideo['filename'], $item['time'], $matchingVideo['time'], $matchingVideo['serie']);
                     }
