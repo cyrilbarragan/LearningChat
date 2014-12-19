@@ -92,8 +92,25 @@ class DefaultController extends Controller
     public function showAction($serie, $pathVideo)
     {
         $pathVideo = str_replace('$', '/', $pathVideo);
-        $item = $this->extractData(basename($pathVideo));
+        $baseFilename = basename($pathVideo);
+        $item = $this->extractData($baseFilename);
         $description = sprintf('Le %s à %s', $item['date'], $item['time_cat']);
+
+        if (preg_match('/bal(\d{2})/i', $pathVideo, $matches)) {
+            $decalledBalls = array(09, 10, 15, 16);
+            if (in_array($matches[1], $decalledBalls)) {
+                $time = $item['time_cat'];
+                $time = date('H:i:s', (strtotime($time) - 300));
+                $description = sprintf('Le %s à %s décallé de 5min', $item['date'], $time);
+            }
+            $decalledBalls = array(11, 12, 13, 14);
+            if (in_array($matches[1], $decalledBalls)) {
+                $time = $item['time_cat'];
+                $time = date('H:i:s', (strtotime($time) - 3960));
+                $description = sprintf('Le %s à %s décallé de 1h6min', $item['date'], $time);
+            }
+        }
+
         $request = $this->getRequest();
         $baseUrl = $request->getScheme() . '://' . $request->getHttpHost() . $request->getBasePath();
 
