@@ -67,7 +67,7 @@ class VideoExtractor
 
     public function convertToHis($time)
     {
-        return sprintf('%02d:%02d:%02d', ($time/3600),($time/60%60), $time%60);
+        return sprintf('%02d:%02d:%02d', ($time/3600),($time/60/60), $time/60);
     }
 
     public function processVideo($videoFilename, $timeStart, $videoTimeStart, $serie)
