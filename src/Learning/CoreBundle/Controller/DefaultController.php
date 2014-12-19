@@ -48,7 +48,7 @@ class DefaultController extends Controller
         $dir = $this->get('kernel')->getRootDir().'/../web/videosclipped/'.$serie;
 
         if (!is_dir($dir)) {
-            throw $this->createHttpNotFoundException("Le dossier $dir n'existe pas");
+            throw $this->createNotFoundException("Le dossier $dir n'existe pas");
         }
 
         return array(
