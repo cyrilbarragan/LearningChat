@@ -74,6 +74,14 @@ class VideoExtractor
     {
         $destFilename = self::VIDEO_CLIPPED_PATH . "/" . $serie . "/". str_replace(':', '', $timeStart) . '_' .  basename($videoFilename);
 
+        if(!preg_match('%[bB]al[0-9]*%', $destFilename)) {
+            $bal = preg_match('%[bB]al[0-9]*%', $videoFilename, $matches);
+            $bal = strtolower($matches[0]);
+            $date = preg_match('%\d{4}(\d{2})(\d{2})\d+%',basename($videoFilename), $matches);
+            $date = $matches[2] . $matches[1];
+            $destFilename = self::VIDEO_CLIPPED_PATH . "/" . $serie . "/". str_replace(':', '', $timeStart). '_' . $bal . "-" . $date . '-' .  basename($videoFilename);
+        }
+
         $dir = dirname($destFilename);
 
         if (!is_dir($dir)) {
@@ -163,7 +171,7 @@ class VideoExtractor
 
     public function extractData($filename)
     {
-        if (preg_match('/^bal(\d{2})-\d{4}-ch\d{2}_(\d{14})/', $filename, $matches)) {
+        if (preg_match('/^[bal(\d{2})-]?[\d{4}-]?ch\d{2}_(\d{14})/', $filename, $matches)) {
             $bal = (int) $matches[1];
             $date = date('Y-m-d', strtotime($matches[2]));
             $hour = substr($matches[2], 8);
