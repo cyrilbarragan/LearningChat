@@ -130,7 +130,7 @@ class VideoExtractor
         }
 
         $pattern = sprintf("/^bal%02d-%04d-ch\d{2}_%s(\d{6}).mp4$/", $item['bal'], $shortDate, $longDate);
-        $pattern2 = sprintf("/^ch\d{2}_%s(\d{6}).mp4$/", $longDate);
+        $pattern2 = sprintf("/^[bB]al%02d\/ch\d{2}_%s(\d{6}).mp4$/", $item['bal'], $longDate);
 
         $directoryIterator = new \RecursiveDirectoryIterator($dir);
         $iterator = new \RecursiveIteratorIterator($directoryIterator);
@@ -145,6 +145,7 @@ class VideoExtractor
                 $serie = sprintf('%02d', $matches[2]);
 
                 if (preg_match($pattern, $filename, $matches) || preg_match($pattern2, $filename, $matches)) {
+
                     $videoSeconds = $this->convertToSeconds($matches[1], true);
 
                     if ($itemSeconds >= $videoSeconds) {
