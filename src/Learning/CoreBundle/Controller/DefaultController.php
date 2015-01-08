@@ -131,13 +131,13 @@ class DefaultController extends Controller
         if (in_array($bal, $decalledBalls)) {
             $time = $timeCat;
             $time = date('H:i:s', (strtotime($time) - 300));
-            return sprintf('Le %s à %s décallé de 5min', $date, $time);
+            return sprintf('Le %s à %s décalé de 5min', $date, $time);
         }
         $decalledBalls = array(11, 12, 13, 14);
         if (in_array($bal, $decalledBalls)) {
             $time = $timeCat;
             $time = date('H:i:s', (strtotime($time) - 3960));
-            return sprintf('Le %s à %s décallé de 1h6min', $date, $time);
+            return sprintf('Le %s à %s décalé de 1h6min', $date, $time);
         }
         return $description;
     }
