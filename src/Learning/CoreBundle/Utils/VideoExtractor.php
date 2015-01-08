@@ -8,8 +8,8 @@ class VideoExtractor
 {
     // seconds
     const CLIP_DURATION = '00:10:00';
-    //const VIDEO_PATH = '../ftp/learning';
-    const VIDEO_PATH = 'web/videos';
+    const VIDEO_PATH = '../ftp/learning';
+    //const VIDEO_PATH = 'web/videos';
     const VIDEO_CLIPPED_PATH = 'web/videosclipped';
 
     protected $dry = false;
@@ -129,7 +129,6 @@ class VideoExtractor
 
         $videos = array();
         foreach ($iterator as $name => $object) {
-            var_dump($object->getRealPath());
 
             $filename = $object->getFilename();
 
@@ -146,8 +145,6 @@ class VideoExtractor
                 }
             }
         }
-
-        var_dump($videos);
 
         ksort($videos);
 
