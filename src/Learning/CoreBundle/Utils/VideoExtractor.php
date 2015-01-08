@@ -95,6 +95,7 @@ class VideoExtractor
         $timeStart = $this->convertToHis($timeStart);
 
         $cmd = "avconv -i \"$videoFilename\" -ss $timeStart -t ".self::CLIP_DURATION." -c copy $destFilename";
+        $cmd ="ffmpeg -ss $timeStart -i \"$videoFilename\" -t ".self::CLIP_DURATION." -c copy $destFilename";
         $this->commandes[] = $cmd;
 
         if (!$this->dry) {
