@@ -130,7 +130,7 @@ class VideoExtractor
         }
 
         $pattern = sprintf("/^bal%02d-%04d-ch\d{2}_%s(\d{6}).mp4$/", $item['bal'], $shortDate, $longDate);
-        $pattern2 = sprintf("/Bal%02d\/ch\d{2}_%s(\d{6}).mp4/", $item['bal'], $longDate);
+        $pattern2 = sprintf("/[Bb]?al\s?%02d\/ch\d{2}_%s(\d{6}).mp4/", $item['bal'], $longDate);
 
         $directoryIterator = new \RecursiveDirectoryIterator($dir);
         $iterator = new \RecursiveIteratorIterator($directoryIterator);
