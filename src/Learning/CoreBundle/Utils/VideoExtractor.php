@@ -146,8 +146,13 @@ class VideoExtractor
                 if (preg_match($pattern, $filename, $matches) || preg_match($pattern2, $name, $matches)) {
                     $videoSeconds = $this->convertToSeconds($matches[1], true);
 
-                    if ($itemSeconds >= $videoSeconds) {
-                        $videos[$videoSeconds] = array('serie' => $serie, 'filename' => $object->getRealPath(), 'time' => $matches[1]);
+                    if(filesize($name) > 0) {
+                        if ($itemSeconds >= $videoSeconds) {
+                            $videos[$videoSeconds] = array('serie' => $serie, 'filename' => $object->getRealPath(), 'time' => $matches[1]);
+                        }
+                    }
+                    else {
+                        $this->logError(sprintf('Présence de vidéo vide : %s', $filename));
                     }
                 }
             }
